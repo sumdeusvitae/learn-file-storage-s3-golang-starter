@@ -5,7 +5,6 @@ import (
 	"encoding/base64"
 	"fmt"
 	"io"
-	"log"
 	"mime"
 	"net/http"
 	"os"
@@ -63,7 +62,8 @@ func (cfg *apiConfig) handlerUploadThumbnail(w http.ResponseWriter, r *http.Requ
 	// Fill the slice with random bytes
 	_, err = rand.Read(randomBytes)
 	if err != nil {
-		log.Fatalf("Failed to generate random bytes: %v", err)
+		respondWithError(w, http.StatusBadRequest, "Failed to generate random bytes", err)
+		return
 	}
 
 	// Convert the random bytes into a Base64 string
