@@ -81,7 +81,7 @@ func main() {
 	}
 
 	// AWS
-	confg, err := config.LoadDefaultConfig(context.Background())
+	confg, err := config.LoadDefaultConfig(context.Background(), config.WithRegion(s3Region))
 	if err != nil {
 		log.Fatal("Couldn't get s3 config")
 		return
