@@ -94,12 +94,14 @@ func (cfg *apiConfig) handlerVideoGet(w http.ResponseWriter, r *http.Request) {
 		respondWithError(w, http.StatusNotFound, "Couldn't get video", err)
 		return
 	}
-	video, err = cfg.dbVideoToSignedVideo(video)
-	if err != nil {
-		respondWithError(w, http.StatusInternalServerError, "Couldn't sign video URL", err)
-		return
-	}
-	// log.Printf("Returning presigned URL in Get: %s", *video.VideoURL)
+	/*
+		video, err = cfg.dbVideoToSignedVideo(video)
+		if err != nil {
+			respondWithError(w, http.StatusInternalServerError, "Couldn't sign video URL", err)
+			return
+		}
+	*/
+
 	respondWithJSON(w, http.StatusOK, video)
 }
 
@@ -120,20 +122,21 @@ func (cfg *apiConfig) handlerVideosRetrieve(w http.ResponseWriter, r *http.Reque
 		respondWithError(w, http.StatusInternalServerError, "Couldn't retrieve videos", err)
 		return
 	}
-	// fmt.Printf("VIDEOS: %v", videos)
-	// Create a new slice to hold videos with signed URLs
-	videosWithSignedURLs := make([]database.Video, 0, len(videos))
+	/*
+		// Create a new slice to hold videos with signed URLs
+		videosWithSignedURLs := make([]database.Video, 0, len(videos))
 
-	for _, video := range videos {
-		videoWithSignedURL, err := cfg.dbVideoToSignedVideo(video)
-		if err != nil {
-			respondWithError(w, http.StatusInternalServerError, "Couldn't sign video URL in retrieve", err)
-			return
+		for _, video := range videos {
+			videoWithSignedURL, err := cfg.dbVideoToSignedVideo(video)
+			if err != nil {
+				respondWithError(w, http.StatusInternalServerError, "Couldn't sign video URL in retrieve", err)
+				return
+			}
+			// Append the modified video with the signed URL to the new slice
+			videosWithSignedURLs = append(videosWithSignedURLs, videoWithSignedURL)
+			// log.Printf("Returning presigned URL in retrieve: %s", *videoWithSignedURL.VideoURL)
 		}
-		// Append the modified video with the signed URL to the new slice
-		videosWithSignedURLs = append(videosWithSignedURLs, videoWithSignedURL)
-		// log.Printf("Returning presigned URL in retrieve: %s", *videoWithSignedURL.VideoURL)
-	}
-	// log.Printf("Returning videos: %v", *videosWithSignedURLs[0].VideoURL)
-	respondWithJSON(w, http.StatusOK, videosWithSignedURLs)
+	*/
+
+	respondWithJSON(w, http.StatusOK, videos) //videosWithSignedURLs
 }
